@@ -1,0 +1,16 @@
+#!/bin/sh
+PATH="/usr/local/bin:$PATH"
+
+# 检查命令是否存在
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+# 安装 pnpm
+if ! command_exists pnpm; then
+  echo "错误：pnpm 未安装。请安装 pnpm 后再试。"
+  exit 1
+fi
+
+# 执行代码格式化
+pnpm run format

@@ -1,0 +1,37 @@
+{
+  "name": "create-arco-pro",
+  "version": "1.0.0",
+  "description": "A template to quickly initialize an Arco Pro project",
+  "author": "oljc <ljc.byte@gmail.com>",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky",
+    "format": "prettier --write ."
+  },
+  "packageManager": "pnpm@9.15.3",
+  "engines": {
+    "node": ">=v18.3.0"
+  },
+  "keywords": [
+    "arco-pro",
+    "template",
+    "arco"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@tsconfig/node22": "^22.0.0",
+    "@types/node": "^22.10.5",
+    "husky": "^9.1.7",
+    "prettier": "^3.4.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,json}": [
+      "prettier --write"
+    ]
+  }
+}
