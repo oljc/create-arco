@@ -1,5 +1,5 @@
 {
-  "header": "# Changelog\n\nCreate Arco Pro Cli 工具更新日志\n",
+  "header": "# Changelog 更新日志\n\n## Create Arco Pro 一款为开发者快速搭建 Arco 项目的命令行工具",
   "types": [
     { "type": "feat", "section": ":sparkles: Features | 新功能" },
     { "type": "fix", "section": ":bug: Bug Fixes | Bug 修复" },
@@ -12,7 +12,7 @@
     { "type": "ci", "section": ":construction_worker: CI | CI 工作流" }
   ],
   "tag-prefix": "v",
-  "releaseCommitMessageFormat": "release: {{currentTag}}版本",
+  "releaseCommitMessageFormat": "release: v{{currentTag}}",
   "commitUrlFormat": "https://github.com/oljc/create-arco-pro/commit/{{hash}}",
   "issueUrlFormat": "https://github.com/oljc/create-arco-pro/issues/{{id}}"
 }
