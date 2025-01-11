@@ -61,12 +61,6 @@
       "prettier --write"
     ]
   },
-  "config": {
-    "standard-version": {
-      "tagPrefix": "v",
-      "changelogHeader": "# Changelog\n\n Create Arco Pro Cli工具更新日志\n"
-    }
-  },
   "publishConfig": {
     "access": "public",
     "provenance": true
