@@ -1,0 +1,18 @@
+{
+  "header": "# Changelog\n\nCreate Arco Pro Cli 工具更新日志\n",
+  "types": [
+    { "type": "feat", "section": ":sparkles: Features | 新功能" },
+    { "type": "fix", "section": ":bug: Bug Fixes | Bug 修复" },
+    { "type": "docs", "section": ":memo: Docs | 文档" },
+    { "type": "refactor", "section": ":recycle: Refactoring | 代码重构" },
+    { "type": "perf", "section": ":zap: Perf | 性能优化" },
+    { "type": "test", "section": ":white_check_mark: Tests | 测试" },
+    { "type": "build", "section": ":package: Build | 打包构建" },
+    { "type": "chore", "section": ":rocket: Chore | 其它" },
+    { "type": "ci", "section": ":construction_worker: CI | CI 工作流" }
+  ],
+  "tag-prefix": "v",
+  "releaseCommitMessageFormat": "release: {{currentTag}}版本",
+  "commitUrlFormat": "https://github.com/oljc/create-arco-pro/commit/{{hash}}",
+  "issueUrlFormat": "https://github.com/oljc/create-arco-pro/issues/{{id}}"
+}
