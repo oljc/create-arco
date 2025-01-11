@@ -1,6 +1,6 @@
 {
   "name": "create-arco-pro",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A template to quickly initialize an Arco Pro project",
   "author": "oljc <ljc.byte@gmail.com>",
   "main": "dist/index.js",
@@ -11,8 +11,14 @@
     "lint-staged": "npx lint-staged",
     "dev": "pnpm run build && pnpm run start",
     "build": "node ./scripts/build.mjs",
-    "start": "node dist/index.cjs"
+    "start": "node dist/index.cjs",
+    "release": "pnpm run build && standard-version"
   },
+  "files": [
+    "dist",
+    "template",
+    "LICENSE"
+  ],
   "bin": {
     "create-arco-pro": "./dist/index.js"
   },
@@ -20,7 +26,16 @@
   "engines": {
     "node": ">=v18.3.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oljc/creat-arco-pro.git"
+  },
+  "bugs": {
+    "url": "https://github.com/oljc/creat-arco-pro/issues"
+  },
+  "homepage": "https://github.com/oljc/creat-arco-pro",
   "keywords": [
+    "create-arco-pro",
     "arco-pro",
     "template",
     "arco"
@@ -37,6 +52,7 @@
     "picocolors": "^1.1.1",
     "prettier": "^3.4.2",
     "prompts": "^2.4.2",
+    "standard-version": "^9.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   },
@@ -44,5 +60,15 @@
     "*.{js,ts,mjs}": [
       "prettier --write"
     ]
+  },
+  "config": {
+    "standard-version": {
+      "tagPrefix": "v",
+      "changelogHeader": "# Changelog\n\n Create Arco Pro Cli工具更新日志\n"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
