@@ -3,11 +3,18 @@
   "version": "1.0.0",
   "description": "A template to quickly initialize an Arco Pro project",
   "author": "oljc <ljc.byte@gmail.com>",
+  "main": "dist/index.js",
   "type": "module",
-  "main": "index.js",
   "scripts": {
     "prepare": "husky",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "lint-staged": "npx lint-staged",
+    "dev": "pnpm run build && pnpm run start",
+    "build": "node ./scripts/build.mjs",
+    "start": "node dist/index.cjs"
+  },
+  "bin": {
+    "create-arco-pro": "./dist/index.js"
   },
   "packageManager": "pnpm@9.15.3",
   "engines": {
@@ -24,13 +31,17 @@
     "@commitlint/config-conventional": "^19.6.0",
     "@tsconfig/node22": "^22.0.0",
     "@types/node": "^22.10.5",
+    "esbuild": "^0.24.2",
     "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "picocolors": "^1.1.1",
     "prettier": "^3.4.2",
+    "prompts": "^2.4.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   },
   "lint-staged": {
-    "*.{js,ts,vue,json}": [
+    "*.{js,ts,mjs}": [
       "prettier --write"
     ]
   }

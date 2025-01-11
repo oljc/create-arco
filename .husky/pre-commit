@@ -13,4 +13,4 @@ if ! command_exists pnpm; then
 fi
 
 # 执行代码格式化
-pnpm run format
+pnpm exec lint-staged

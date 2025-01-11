@@ -1,10 +1,11 @@
 {
   "extends": "@tsconfig/node22/tsconfig.json",
-  "include": ["index.ts"],
   "compilerOptions": {
     "strict": false,
     "resolveJsonModule": true,
     "moduleResolution": "Bundler",
-    "module": "ESNext"
-  }
+    "module": "ESNext",
+    "outDir": "dist"
+  },
+  "include": ["cli/**/*"]
 }
