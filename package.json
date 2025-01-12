@@ -3,13 +3,12 @@
   "version": "0.1.1",
   "description": "A template to quickly initialize an Arco Pro project",
   "author": "oljc <ljc.byte@gmail.com>",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "type": "module",
   "scripts": {
     "prepare": "husky",
     "format": "prettier --write .",
-    "lint-staged": "npx lint-staged",
-    "dev": "pnpm run build && pnpm run start",
+    "dev": "node ./scripts/build.mjs --dev",
     "build": "node ./scripts/build.mjs",
     "start": "node dist/index.cjs",
     "release": "pnpm run build && standard-version"
@@ -20,7 +19,7 @@
     "LICENSE"
   ],
   "bin": {
-    "create-arco-pro": "./dist/index.js"
+    "create-arco-pro": "./dist/index.cjs"
   },
   "packageManager": "pnpm@9.15.3",
   "engines": {
@@ -49,11 +48,9 @@
     "esbuild": "^0.24.2",
     "husky": "^9.1.7",
     "lint-staged": "^15.3.0",
-    "picocolors": "^1.1.1",
     "prettier": "^3.4.2",
     "prompts": "^2.4.2",
     "standard-version": "^9.5.0",
-    "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   },
   "lint-staged": {
