@@ -1,18 +1,20 @@
 {
-  "header": "# Changelog 更新日志\n\n## Create Arco Pro 一款为开发者快速搭建 Arco 项目的命令行工具",
+  "header": "# 更新日志(Changelog):tada:\n\n**一款为开发者快速搭建 Arco 项目的命令行工具**",
   "types": [
-    { "type": "feat", "section": ":sparkles: Features | 新功能" },
-    { "type": "fix", "section": ":bug: Bug Fixes | Bug 修复" },
-    { "type": "docs", "section": ":memo: Docs | 文档" },
-    { "type": "refactor", "section": ":recycle: Refactoring | 代码重构" },
-    { "type": "perf", "section": ":zap: Perf | 性能优化" },
-    { "type": "test", "section": ":white_check_mark: Tests | 测试" },
-    { "type": "build", "section": ":package: Build | 打包构建" },
-    { "type": "chore", "section": ":rocket: Chore | 其它" },
-    { "type": "ci", "section": ":construction_worker: CI | CI 工作流" }
+    { "type": "feat", "section": "### :sparkles: Features | 更新" },
+    { "type": "fix", "section": "### :bug: Bug | 修复" },
+    { "type": "docs", "section": "### :memo: Docs | 文档" },
+    { "type": "refactor", "section": "### :recycle: Refactoring | 重构" },
+    { "type": "perf", "section": "### :zap: Perf | 优化" },
+    { "type": "test", "section": "### :white_check_mark: Tests | 测试" },
+    { "type": "build", "section": "### :package: Build | 构建" },
+    { "type": "chore", "section": "### :rocket: Chore" },
+    { "type": "ci", "section": "### :gear: CI | 持续集成" },
+    { "type": "enhance", "section": "### :muscle: Enhance | 增强" }
   ],
   "tag-prefix": "v",
   "releaseCommitMessageFormat": "release: v{{currentTag}}",
   "commitUrlFormat": "https://github.com/oljc/create-arco-pro/commit/{{hash}}",
-  "issueUrlFormat": "https://github.com/oljc/create-arco-pro/issues/{{id}}"
+  "issueUrlFormat": "https://github.com/oljc/create-arco-pro/issues/{{id}}",
+  "footer": "\n\n感谢使用 Create Arco Pro！更多内容请访问 [项目主页](https://github.com/oljc/create-arco-pro)。"
 }
