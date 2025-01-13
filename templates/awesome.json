@@ -1,0 +1,11 @@
+{
+  "react": [],
+  "vue": [
+    {
+      "name": "Arco Admin",
+      "repo": "https://github.com/oljc/arco-admin",
+      "packageManager": "pnpm",
+      "start": "pnpm run dev"
+    }
+  ]
+}

@@ -1,9 +1,0 @@
-{
-  "react": [],
-  "vue": [
-    {
-      "name": "Arco Admin",
-      "repository": "https://github.com/oljc/arco-admin"
-    }
-  ]
-}
