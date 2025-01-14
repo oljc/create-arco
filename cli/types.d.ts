@@ -2,6 +2,7 @@ interface Result {
   projectName: string
   techStack: 'vue' | 'react'
   version: 'full' | 'basic' | 'community'
+  manager?: 'npm' | 'yarn' | 'pnpm'
   community: Awesome
 }
 

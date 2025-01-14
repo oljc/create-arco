@@ -40,6 +40,9 @@
     "arco"
   ],
   "license": "MIT",
+  "dependencies": {
+    "tar": "^7.4.3"
+  },
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",

@@ -1,22 +1,12 @@
 #!/usr/bin/env node
 
-import * as fs from 'node:fs'
-import * as path from 'node:path'
 import prompts from 'prompts'
 import { parseArgs } from 'node:util'
 import { banner, bannerStr } from './constants'
-
-import { version, name } from '../package.json'
-import { color, isValidName } from './utils'
-
-import community from '../templates/community.json'
-
-interface Result {
-  projectName: string
-  techStack: 'vue' | 'react'
-  version: 'full' | 'basic' | 'community'
-  community: any
-}
+import { color, isValidName, end, fetch, untar, createTempDir, command } from './utils'
+import { version as v, name } from '../package.json'
+import awesome from '../templates/awesome.json'
+import { tipsManage } from './tips'
 
 async function main() {
   const cwd = process.cwd()
@@ -31,13 +21,23 @@ async function main() {
   })
 
   if (argv.version) {
-    console.log(`${name} ${color(48, `v${version}`)}`)
+    console.log(`${name} ${color(`v${v}`, 48)}`)
     process.exit(0)
   }
 
   console.log()
-  console.log(process.stdout.isTTY && process.stdout.getColorDepth() > 8 ? banner : bannerStr)
+  console.log(
+    process.stdout.isTTY && process.stdout.getColorDepth() > 8 ? banner : color(bannerStr, 27)
+  )
   console.log()
+
+  const supportedManagers: string[] = []
+  for (const manager of ['pnpm', 'yarn', 'npm'] as const) {
+    try {
+      await command(manager, ['--version'])
+      supportedManagers.push(manager)
+    } catch {}
+  }
 
   let result: Result = {} as Result
   try {
@@ -64,7 +64,7 @@ async function main() {
             { title: 'React', value: 'react' }
           ],
           format: (value: Result['techStack']) => {
-            contrib = community[value] || []
+            contrib = awesome[value] || []
             return value
           }
         },
@@ -88,9 +88,24 @@ async function main() {
           choices: () =>
             contrib.map((item) => ({
               title: item.name,
-              value: item,
-              description: '1k Stars, oljc'
+              value: item
             }))
+        },
+        {
+          name: 'manager',
+          type: 'select',
+          message: '请选择包管理器',
+          hint: '上下键选择，回车键确认',
+          choices: (prev: Result) => {
+            const recommended = prev.community?.packageManager || 'pnpm'
+            return supportedManagers.map((manager) => ({
+              title: manager,
+              value: manager,
+              description: manager === recommended ? '推荐' : undefined
+            }))
+          },
+          initial: (prev: Result) =>
+            ['pnpm', 'yarn', 'npm'].indexOf(prev.community?.packageManager || 'pnpm')
         },
         {
           name: 'confirm',
@@ -101,7 +116,7 @@ async function main() {
       ],
       {
         onCancel: () => {
-          console.log(color(1, '✖') + ' 取消创建项目')
+          console.log(color('✖', 1) + ' 取消创建项目')
           process.exit(0)
         }
       }
@@ -111,21 +126,44 @@ async function main() {
     process.exit(1)
   }
 
-  console.log(color(10, '正在初始化项目'))
+  const tips = tipsManage('正在生成项目').start()
+  const { tempDir, cleanup } = createTempDir()
+  const { projectName, techStack, version, community, manager } = result
+
   // 当选择的是社区版本时 从Github上下载
+  let url = `https://github.com/RenderUI/${techStack}-${version}/archive/refs/heads/main.tar.gz`
   if (result.version === 'community') {
-    const repository = result.community.repository
-    // 下载模板
+    const { repo } = community
+    url = `${repo}/archive/refs/heads/main.tar.gz`
   }
 
-  // 结束语
-  console.log(color(87, `\n项目生成完成，感谢使用 create-arco-pro！`))
-  console.log(`\n快速开始：`)
-  console.log(`  - ${color(222, `cd ${result.projectName}`)}`)
-  console.log(`  - ${color(222, 'npm run dev')}`)
+  const file = `${tempDir}/${projectName}.tar.gz`
+  const path = `${cwd}/${projectName}`
+  await fetch(url, file, tips)
+  await untar(file, path)
 
-  console.log(color(192, '\n感谢您的使用！如有反馈或需要支持，欢迎访问项目仓库并给予 Star！'))
-  console.log(color(192, `GitHub: \x1b[4mhttps://github.com/oljc/creat-arco-pro\x1b[24m`))
+  cleanup()
+
+  const projectPath = `${cwd}/${result.projectName}`
+  tips.start('初始化 Git')
+  try {
+    await command('git', ['init', '--quiet'], projectPath)
+    tips.update('Git 初始化成功')
+  } catch (e) {
+    tips.fail('Git 初始化失败')
+  }
+
+  // 安装依赖
+  tips.start('安装项目依赖中')
+  try {
+    await command(manager, ['install', '--quiet'], projectPath)
+    tips.succeed('依赖安装成功')
+  } catch (e) {
+    tips.fail('依赖安装失败')
+    throw e
+  }
+
+  end(projectName, result.community?.start)
 }
 
 main().catch((e) => {
