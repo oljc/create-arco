@@ -1,6 +1,8 @@
 # 更新日志(Changelog):tada:
 
 **一款为开发者快速搭建 Arco 项目的命令行工具**
+### [0.1.4](https://github.com/oljc/creat-arco-pro/compare/v0.1.3...v0.1.4) (2025-01-14)
+
 ### [0.1.3](https://github.com/oljc/creat-arco-pro/compare/v0.1.2...v0.1.3) (2025-01-14)
 
 
