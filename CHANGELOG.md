@@ -1,6 +1,35 @@
-# Changelog 更新日志
+# 更新日志(Changelog):tada:
 
-## Create Arco Pro 一款为开发者快速搭建 Arco 项目的命令行工具
+**一款为开发者快速搭建 Arco 项目的命令行工具**
+### [0.1.3](https://github.com/oljc/creat-arco-pro/compare/v0.1.2...v0.1.3) (2025-01-14)
+
+
+### ### :gear: CI | 持续集成
+
+* 更新日志风格 ([a7b3242](https://github.com/oljc/create-arco-pro/commit/a7b32425497f8d25f067c4b0e04deee608e8d690))
+
+
+### ### :bug: Bug | 修复
+
+* 目录拼写错误 ([7e51e74](https://github.com/oljc/create-arco-pro/commit/7e51e749f1a19731a3aeab9f3c5b49ad0d0445f3))
+
+
+### ### :recycle: Refactoring | 重构
+
+* 重构文件增强可读性 ([c59ba27](https://github.com/oljc/create-arco-pro/commit/c59ba270febe0fc032956c4af506eee0beb9535c))
+
+
+### ### :rocket: Chore
+
+* 忽略临时目录本地测试生成 ([1e8af80](https://github.com/oljc/create-arco-pro/commit/1e8af805963a5cdf1ac63fa84e3492bb3a53d8ed))
+* 增加忽略词 ([d5e03b8](https://github.com/oljc/create-arco-pro/commit/d5e03b87743f1067671cb1e00ea851d705c8cc67))
+
+
+### ### :sparkles: Features | 更新
+
+* 新增类型申明 ([0f7ed34](https://github.com/oljc/create-arco-pro/commit/0f7ed342f8b6882487724ea96d5303d1a53b5ad7))
+* 新增一些功能 ([fe55da1](https://github.com/oljc/create-arco-pro/commit/fe55da18219443b3819edcf525830ec1502cb4d0))
+
 ### 0.1.2 (2025-01-12)
 
 
