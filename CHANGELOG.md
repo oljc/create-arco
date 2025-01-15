@@ -1,6 +1,24 @@
 # 更新日志(Changelog):tada:
 
 **一款为开发者快速搭建 Arco 项目的命令行工具**
+### [0.1.5](https://github.com/oljc/creat-arco-pro/compare/v0.1.4...v0.1.5) (2025-01-15)
+
+
+### ### :gear: CI | 持续集成
+
+* 调整 CI 权限 ([2a308a4](https://github.com/oljc/create-arco-pro/commit/2a308a49d3cd92ab7fa0d6af7c473cfbd3ef97c7))
+
+
+### ### :bug: Bug | 修复
+
+* 修复克隆深度警告 ([871f113](https://github.com/oljc/create-arco-pro/commit/871f113e0a34f50272383d723d15cab4ecca6eda))
+
+
+### ### :sparkles: Features | 更新
+
+* 调整编辑器配置 ([f1b704c](https://github.com/oljc/create-arco-pro/commit/f1b704cf24c484729d5fe89a3cba03caf6d971ee))
+* 修复一些已知问题、优化性能 ([6e811e2](https://github.com/oljc/create-arco-pro/commit/6e811e2407b50f072535007c273c431db7dbd04d))
+
 ### [0.1.4](https://github.com/oljc/creat-arco-pro/compare/v0.1.3...v0.1.4) (2025-01-14)
 
 ### [0.1.3](https://github.com/oljc/creat-arco-pro/compare/v0.1.2...v0.1.3) (2025-01-14)

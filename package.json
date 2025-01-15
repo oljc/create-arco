@@ -1,6 +1,6 @@
 {
   "name": "create-arco-pro",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A template to quickly initialize an Arco Pro project",
   "author": "oljc <ljc.byte@gmail.com>",
   "main": "dist/index.cjs",
