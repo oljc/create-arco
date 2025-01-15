@@ -157,9 +157,14 @@ async function main() {
   // 安装依赖
   tips.start('安装项目依赖中')
   try {
-    await command(manager, ['install', '--quiet'], path)
+    await command(manager, ['install', '--quiet', '--registry'], path)
     tips.succeed('项目依赖安装成功')
   } catch (e) {
+    await command(
+      manager,
+      ['install', '--quiet', '--registry', 'https://registry.npmmirror.com'],
+      path
+    )
     tips.fail('依赖安装失败，请手动安装')
   }
 
