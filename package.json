@@ -27,12 +27,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oljc/creat-arco-pro.git"
+    "url": "git+https://github.com/oljc/create-arco-pro.git"
   },
   "bugs": {
-    "url": "https://github.com/oljc/creat-arco-pro/issues"
+    "url": "https://github.com/oljc/create-arco-pro/issues"
   },
-  "homepage": "https://github.com/oljc/creat-arco-pro",
+  "homepage": "https://github.com/oljc/create-arco-pro",
   "keywords": [
     "create-arco-pro",
     "arco-pro",
