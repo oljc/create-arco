@@ -1,6 +1,18 @@
 # 更新日志(Changelog):tada:
 
 **一款为开发者快速搭建 Arco 项目的命令行工具**
+### [0.2.1](https://github.com/oljc/create-arco-pro/compare/v0.2.0...v0.2.1) (2025-01-15)
+
+
+### ### :gear: CI | 持续集成
+
+* create ADD.yml ([f99aeee](https://github.com/oljc/create-arco-pro/commit/f99aeeed23e463c39ad3b2a410f05cadbb64989d))
+
+
+### ### :sparkles: Features | 更新
+
+* 添加 Vue 开源项目 ([#2](https://github.com/oljc/create-arco-pro/issues/2)) ([777c2f6](https://github.com/oljc/create-arco-pro/commit/777c2f6284bdf7a4f4a1bd56f73976bf596e86f1))
+
 ## [0.2.0](https://github.com/oljc/create-arco-pro/compare/v0.1.5...v0.2.0) (2025-01-15)
 
 
