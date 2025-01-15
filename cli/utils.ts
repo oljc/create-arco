@@ -28,7 +28,7 @@ export async function fetch(url: string, dest: string, tips: any): Promise<void>
       port: parsedUrl.port,
       path: parsedUrl.pathname,
       headers: {
-        Connection: 'close'
+        Connection: 'keep-alive'
       }
     }
 
@@ -54,7 +54,7 @@ export async function fetch(url: string, dest: string, tips: any): Promise<void>
             })
             .pipe(fs.createWriteStream(dest))
             .on('finish', () => {
-              tips.succeed('初始化完成\u{1F389}')
+              tips.succeed('初始化完成')
               resolve()
             })
             .on('error', () => {
@@ -67,9 +67,10 @@ export async function fetch(url: string, dest: string, tips: any): Promise<void>
         // TODO: 保底加速访问后续处理
         if (!url.includes('https://fastgit.cc')) {
           fetch(`https://fastgit.cc/${url}`, dest, tips).then(resolve, reject)
+        } else {
+          tips.fail('网络超时请稍后重试')
+          reject
         }
-        tips.fail('网络超时请稍后重试')
-        reject
       })
   })
 }
@@ -132,10 +133,11 @@ export const command = (cmd: string, args: string[], cwd?: string) => {
  * 结束语
  */
 export const end = (name, start = 'pnpm run dev') => {
-  console.log(`\n快速开始：\n`)
+  console.log(`\n\u{1F389} 快速开始：\n`)
   console.log(`  - ${color(`cd ${name}`, 192)}`)
   console.log(`  - ${color(start, 192)}`)
 
   console.log(color(`\nGitHub: \x1b[4mhttps://github.com/oljc/creat-arco-pro\x1b[24m`, 45))
   console.log(color('感谢您的使用！如有反馈或需要支持，欢迎访问项目仓库并给予Star！', 45))
+  process.exit(0)
 }

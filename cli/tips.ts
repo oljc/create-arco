@@ -24,7 +24,7 @@ class Tips {
 
     this.interval = setInterval(() => {
       const frame = this.frames[this.frameIndex]
-      process.stdout.write(`\r${frame} ${this.text}`)
+      process.stdout.write(`\r\x1B[K${frame} ${this.text}`)
       this.frameIndex = (this.frameIndex + 1) % this.frames.length
     }, 100)
 

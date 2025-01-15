@@ -31,13 +31,16 @@ async function main() {
   )
   console.log()
 
-  const supportedManagers: string[] = []
-  for (const manager of ['pnpm', 'yarn', 'npm'] as const) {
-    try {
-      await command(manager, ['--version'])
-      supportedManagers.push(manager)
-    } catch {}
-  }
+  const supportedManagers = await Promise.all(
+    ['pnpm', 'yarn', 'npm'].map(async (manager) => {
+      try {
+        await command(manager, ['--version'])
+        return manager
+      } catch {
+        return null
+      }
+    })
+  ).then((managers) => managers.filter(Boolean) as string[])
 
   let result: Result = {} as Result
   try {
@@ -131,11 +134,10 @@ async function main() {
   const { projectName, techStack, version, community, manager } = result
 
   // 当选择的是社区版本时 从Github上下载
-  let url = `https://github.com/RenderUI/${techStack}-${version}/archive/refs/heads/main.tar.gz`
-  if (result.version === 'community') {
-    const { repo } = community
-    url = `${repo}/archive/refs/heads/main.tar.gz`
-  }
+  const url =
+    version === 'community'
+      ? `${community.repo}/archive/refs/heads/main.tar.gz`
+      : `https://github.com/RenderUI/${techStack}-${version}/archive/refs/heads/main.tar.gz`
 
   const file = `${tempDir}/${projectName}.tar.gz`
   const path = `${cwd}/${projectName}`
@@ -144,10 +146,9 @@ async function main() {
 
   cleanup()
 
-  const projectPath = `${cwd}/${result.projectName}`
   tips.start('初始化 Git')
   try {
-    await command('git', ['init', '--quiet'], projectPath)
+    await command('git', ['init', '--quiet'], path)
     tips.update('Git 初始化成功')
   } catch (e) {
     tips.fail('Git 初始化失败')
@@ -156,11 +157,10 @@ async function main() {
   // 安装依赖
   tips.start('安装项目依赖中')
   try {
-    await command(manager, ['install', '--quiet'], projectPath)
-    tips.succeed('依赖安装成功')
+    await command(manager, ['install', '--quiet'], path)
+    tips.succeed('项目依赖安装成功')
   } catch (e) {
-    tips.fail('依赖安装失败')
-    throw e
+    tips.fail('依赖安装失败，请手动安装')
   }
 
   end(projectName, result.community?.start)
