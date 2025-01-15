@@ -1,6 +1,24 @@
 # 更新日志(Changelog):tada:
 
 **一款为开发者快速搭建 Arco 项目的命令行工具**
+## [0.2.0](https://github.com/oljc/create-arco-pro/compare/v0.1.5...v0.2.0) (2025-01-15)
+
+
+### ### :rocket: Chore
+
+* 仓库地址调整 ([cb01c3e](https://github.com/oljc/create-arco-pro/commit/cb01c3ebc3140ddc3f717de5e9276e1a27a15c89))
+
+
+### ### :memo: Docs | 文档
+
+* 增加项目介绍 README.md ([bc36bb3](https://github.com/oljc/create-arco-pro/commit/bc36bb34a1265ecac869731d6dca70c3e6b6cb51))
+* update README.md ([8c05a97](https://github.com/oljc/create-arco-pro/commit/8c05a9731c9b76253cad5e5dfb78687cea81795d))
+
+
+### ### :sparkles: Features | 更新
+
+* 增加依赖安装重试机制 ([d01ec8c](https://github.com/oljc/create-arco-pro/commit/d01ec8ce34525a16e443a73bb1e8164634a4a184))
+
 ### [0.1.5](https://github.com/oljc/creat-arco-pro/compare/v0.1.4...v0.1.5) (2025-01-15)
 
 
