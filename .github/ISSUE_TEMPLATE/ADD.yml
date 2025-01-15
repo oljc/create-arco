@@ -1,0 +1,50 @@
+name: 新增模板项目
+description: 新增一个开源项目
+title: "[Add]: "
+labels: ["template"]
+projects: ["main"]
+assignees:
+  - oljc
+body:
+  - type: input
+    id: name
+    attributes:
+      label: 开源项目名
+      description: 该名字将用于用户选择时的选项名
+    validations:
+      required: true
+  - type: input
+    id: repo
+    attributes:
+      label: 开源项目地址
+      description: 目前仅支持 Github 地址
+    validations:
+      required: true
+  - type: dropdown
+    id: techStack
+    attributes:
+      label: 技术栈
+      description: 开源项目所使用的技术栈
+      options:
+        - Vue
+        - React
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    id: packageManager
+    attributes:
+      label: 包管理器
+      multiple: true
+      options:
+        - pnpm
+        - yarn
+        - npm
+      default: 0
+  - type: input
+    id: start
+    attributes:
+      label: 项目启动命令
+      description: 项目安装后执行预览的启动命令
+    validations:
+      required: true
