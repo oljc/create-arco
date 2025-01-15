@@ -69,6 +69,9 @@ npx create-arco-pro
 | [Arco Design Pro](https://react-pro.arco.design) | `React` | `pnpm` | 开箱即用的中后台前端解决方案 |
 | [Arco Design Pro Vue](https://vue-pro.arco.design) | `Vue` | `pnpm` | Arco 官网版 开箱即用的中后台前端解决方案 |
 | [Arco Admin ](https://github.com/oljc/arco-admin) | `Vue` | `pnpm` | Vite5 + vue3 + Arco + TypeScript |
+| [Gi Admin Pro](https://gitee.com/lin0716/gi-demo) | `Vue` | `npm` | 一个基于 Vue3、Vite、TypeScript、Arco Design Vue、Pinia、VueUse 等的免费中后台模版 |
+| [Fantastic Admin](https://fantastic-admin.hurui.me/) | `Vue` | `pnpm` | 杰出的管理系统框架, 开箱即用，提供舒适开发体验 |
+| [Arco Work](https://github.com/qingqingxuan/arco-work) | `Vue` | `npm` | Vue Admin Work 系列中成熟和完善的中后台框架 |
 
 > [!NOTE]
 > 模板列表排名不分先后，按加入时间排序。    
