@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1 align="center">Create Arco</h1>
+<h1 align="center">Create Arco Pro</h1>
 <p align="center">一个能够快速搭建 Arco 模板项目的命令行工具</p> 
   
 ![Static Badge](https://img.shields.io/badge/%E8%B6%85%E7%BA%A7%E5%BF%AB%E7%9A%84Cli%20-bright?logo=bytedance&color=%23fff)
@@ -18,7 +18,7 @@
 - 提供多种模板选择（官方基础版、官方完整版、社区开源模板）
 - 简洁的交互式界面，傻瓜式快速生成项目
 
----
+![shot](https://github.com/user-attachments/assets/26c165f4-e99e-4318-bf13-fe90b9d382d2)
 
 ## 🏷️ 使用
 
@@ -47,6 +47,11 @@ npm create arco-pro@latest
 ```sh
 npx create-arco-pro
 ```
+
+> [!TIP]
+> ```sh
+>  pnpm create arco-pro <项目名>
+> ```
 
 ## ⚙️ 配置选项
 
