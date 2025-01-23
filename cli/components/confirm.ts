@@ -10,7 +10,7 @@ class ConfirmPrompt extends Prompt {
     this.msg = opts.message
     this.value = opts.initial
     this.yes = opts.yes || 'Yes'
-    this.no = opts.no || 'NO'
+    this.no = opts.no || 'No'
     this.out.write(cursor.hide)
     this.render()
   }
