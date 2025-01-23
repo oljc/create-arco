@@ -3,16 +3,13 @@ import https from 'node:https'
 import zlib from 'node:zlib'
 import path from 'node:path'
 import os from 'node:os'
+import { font } from './color'
 import { x } from 'tar'
 import { spawn } from 'child_process'
 
 export const isValidName = (name: string): boolean => {
   return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(name)
 }
-
-// 8位表示法 - 不用3/4位表示法是因为不打算兼容很老的终端
-export const color = (t, i = 255) => `\x1b[38;5;${i}m${t}\x1b[0m`
-export const bgColor = (t, i) => `\x1b[48;5;${i}m${t}\x1b[0m`
 
 /**
  * 下载文件
@@ -129,15 +126,35 @@ export const command = (cmd: string, args: string[], cwd?: string) => {
   })
 }
 
-/**
- * 结束语
- */
-export const end = (name, start = 'pnpm run dev') => {
-  console.log(`\n\u{1F389} 快速开始：\n`)
-  console.log(`  - ${color(`cd ${name}`, 192)}`)
-  console.log(`  - ${color(start, 192)}`)
-
-  console.log(color(`\nGitHub: \x1b[4mhttps://github.com/oljc/creat-arco-pro\x1b[24m`, 45))
-  console.log(color('感谢您的使用！如有反馈或需要支持，欢迎访问项目仓库并给予Star！', 45))
-  process.exit(0)
+const main = {
+  arrowUp: '↑',
+  arrowDown: '↓',
+  arrowLeft: '←',
+  arrowRight: '→',
+  pointer: '>',
+  ellipsis: ':',
+  tick: '✔',
+  cross: '✖',
+  pointerSmall: '›'
 }
+const win = {
+  tick: '√',
+  cross: '×',
+  pointerSmall: '»'
+}
+
+export const icons = {
+  ...main,
+  ...(process.platform === 'win32' ? win : {})
+}
+
+const states = {
+  abort: font(icons.cross, 'red'),
+  exit: font(icons.cross, 'yellow'),
+  submit: font(icons.tick, 'green'),
+  none: font('?', 'cyan')
+}
+
+export const icon = (name) => states[name] || states.none
+
+export const delimiter = (c) => font(c ? icons.ellipsis : icons.pointerSmall, 'gray')

@@ -1,4 +1,4 @@
-import { color } from './utils'
+import { font } from './color'
 
 class Tips {
   private text: string
@@ -49,15 +49,15 @@ class Tips {
   }
 
   succeed(message: string = '成功！') {
-    this.stopWithStatus(color('✔', 2), message)
+    this.stopWithStatus(font('✔', 'green'), message)
   }
 
   fail(message: string = '失败！') {
-    this.stopWithStatus(color('✖', 1), message)
+    this.stopWithStatus(font('✖', 'red'), message)
   }
 
   warn(message: string = '警告！') {
-    this.stopWithStatus(color('!', 3), message)
+    this.stopWithStatus(font('!', 'yellow'), message)
   }
 }
 

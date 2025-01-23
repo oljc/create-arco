@@ -1,9 +1,11 @@
-interface Result {
+interface Answers {
   projectName: string
   techStack: 'vue' | 'react'
   version: 'full' | 'basic' | 'community'
   manager?: 'npm' | 'yarn' | 'pnpm'
-  community: Awesome
+  community?: Awesome
+  confirm: boolean
+  initGit: boolean
 }
 
 interface Awesome {

@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-import prompts from 'prompts'
+import prompts from './prompt'
 import { parseArgs } from 'node:util'
 import { banner, bannerStr } from './constants'
-import { color, isValidName, end, fetch, untar, createTempDir, command } from './utils'
+import { font } from './color'
+import { isValidName, fetch, untar, createTempDir, command } from './utils'
 import { version as v, name } from '../package.json'
 import awesome from '../templates/awesome.json'
 import { tipsManage } from './tips'
@@ -21,13 +22,13 @@ async function main() {
   })
 
   if (argv.version) {
-    console.log(`${name} ${color(`v${v}`, 48)}`)
+    console.log(`${name} ${font(`v${v}`, 'blue')}`)
     process.exit(0)
   }
 
   console.log()
   console.log(
-    process.stdout.isTTY && process.stdout.getColorDepth() > 8 ? banner : color(bannerStr, 27)
+    process.stdout.isTTY && process.stdout.getColorDepth() > 8 ? banner : font(bannerStr, 'blue')
   )
   console.log()
 
@@ -42,18 +43,15 @@ async function main() {
     })
   ).then((managers) => managers.filter(Boolean) as string[])
 
-  let result: Result = {} as Result
+  let result: Answers = {} as Answers
   try {
-    const defaultProjectName = positionals[0] || 'hello-arco-pro'
-
-    let contrib = [] as any[]
     result = await prompts(
       [
         {
           name: 'projectName',
-          type: 'text',
+          type: 'input',
           message: '请输入项目名称',
-          initial: defaultProjectName,
+          initial: positionals[0] || 'hello-arco-pro',
           format: (name: string) => name.trim(),
           validate: (name: string) => isValidName(name) || '请重新输入合法项目名'
         },
@@ -61,36 +59,35 @@ async function main() {
           name: 'techStack',
           type: 'select',
           message: '请选择你希望使用的技术栈',
-          hint: '箭头键选择，回车键确认',
-          choices: [
-            { title: 'Vue', value: 'vue' },
-            { title: 'React', value: 'react' }
-          ],
-          format: (value: Result['techStack']) => {
-            contrib = awesome[value] || []
-            return value
-          }
+          options: [
+            { label: 'Vue', value: 'vue' },
+            { label: 'React', value: 'react' }
+          ]
         },
         {
           name: 'version',
           type: 'select',
           message: '请选择版本',
-          hint: '上下键选择，回车键确认',
-          warn: '暂无社区开源项目',
-          choices: () => [
-            { title: '基础版', value: 'basic' },
-            { title: '完整版', value: 'full' },
-            { title: '开源社区', value: 'community', disabled: !contrib.length }
+          options: (answers) => [
+            { label: '基础版', value: 'basic' },
+            { label: '完整版', value: 'full' },
+            {
+              label: '开源项目',
+              value: 'community',
+              disabled: awesome[answers.techStack].length <= 0,
+              warn: '暂无社区开源项目',
+              description: '来自社区的优秀活跃开源项目'
+            }
           ]
         },
         {
           name: 'community',
-          type: (prev: string) => (prev === 'community' ? 'select' : null),
+          type: 'select',
           message: '请选择社区开源模板',
-          hint: '上下键选择，回车键确认',
-          choices: () =>
-            contrib.map((item) => ({
-              title: item.name,
+          when: (answers) => answers.version === 'community',
+          options: (answers) =>
+            awesome[answers.techStack].map((item) => ({
+              label: item.name,
               value: item
             }))
         },
@@ -98,28 +95,31 @@ async function main() {
           name: 'manager',
           type: 'select',
           message: '请选择包管理器',
-          hint: '上下键选择，回车键确认',
-          choices: (prev: Result) => {
-            const recommended = prev.community?.packageManager || 'pnpm'
+          options: (answers) => {
+            const recommended = answers.community?.packageManager || 'pnpm'
             return supportedManagers.map((manager) => ({
-              title: manager,
+              label: manager,
               value: manager,
-              description: manager === recommended ? '推荐' : undefined
+              description: manager === recommended ? '推荐' : null
             }))
-          },
-          initial: (prev: Result) =>
-            ['pnpm', 'yarn', 'npm'].indexOf(prev.community?.packageManager || 'pnpm')
+          }
+        },
+        {
+          name: 'initGit',
+          type: 'confirm',
+          message: '是否初始化 Git',
+          initial: true
         },
         {
           name: 'confirm',
           type: 'confirm',
-          message: '确认生成项目吗？',
+          message: '确认生成项目吗',
           initial: true
         }
       ],
       {
         onCancel: () => {
-          console.log(color('✖', 1) + ' 取消创建项目')
+          console.log(font('✖', 'red') + ' 取消创建项目')
           process.exit(0)
         }
       }
@@ -129,9 +129,15 @@ async function main() {
     process.exit(1)
   }
 
+  if (!result.confirm) {
+    console.log(font('✖', 'red') + ' 取消创建项目')
+    process.exit(0)
+  }
+
+  const { projectName, techStack, version, community, manager, initGit } = result
+
   const tips = tipsManage('正在生成项目').start()
   const { tempDir, cleanup } = createTempDir()
-  const { projectName, techStack, version, community, manager } = result
 
   // 当选择的是社区版本时 从Github上下载
   const url =
@@ -146,29 +152,49 @@ async function main() {
 
   cleanup()
 
-  tips.start('初始化 Git')
-  try {
-    await command('git', ['init', '--quiet'], path)
-    tips.update('Git 初始化成功')
-  } catch (e) {
-    tips.fail('Git 初始化失败')
+  if (initGit) {
+    tips.start('初始化 Git')
+    try {
+      await command('git', ['init', '--quiet'], path)
+      tips.update('Git 初始化成功')
+    } catch (e) {
+      tips.fail('Git 初始化失败, 请自行初始化')
+    }
   }
 
   // 安装依赖
   tips.start('安装项目依赖中')
-  try {
-    await command(manager, ['install', '--quiet', '--registry'], path)
-    tips.succeed('项目依赖安装成功')
-  } catch (e) {
-    await command(
-      manager,
-      ['install', '--quiet', '--registry', 'https://registry.npmmirror.com'],
-      path
-    )
+  const argsList = [
+    ['install', '--quiet'],
+    ['install', '--quiet', '--registry', 'https://registry.npmmirror.com']
+  ]
+
+  const success = argsList.some(async (args) => {
+    try {
+      await command(manager, args, path)
+      tips.succeed('项目依赖安装成功')
+      return true
+    } catch {
+      return false
+    }
+  })
+
+  if (!success) {
     tips.fail('依赖安装失败，请手动安装')
   }
 
-  end(projectName, result.community?.start)
+  console.log(`\n\u{1F389} 快速开始：\n`)
+  console.log(`  - ${font(`cd ${name}`, 192)}`)
+  console.log(`  - ${font(community.start || 'pnpm run dev', 192)}`)
+
+  if (version === 'community') {
+    console.log(font(`\n项目文档：${font(community.repo, 'underline')}`, 'blue'))
+  }
+  console.log(
+    font(`\nGitHub: ${font('https://github.com/oljc/creat-arco-pro', 'underline')}`, 'blue')
+  )
+  console.log(font('感谢您的使用！如有反馈或需要支持，欢迎访问项目仓库并给予Star！', 'blue'))
+  process.exit(0)
 }
 
 main().catch((e) => {
