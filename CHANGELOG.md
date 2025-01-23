@@ -1,6 +1,13 @@
 # 更新日志(Changelog):tada:
 
 **一款为开发者快速搭建 Arco 项目的命令行工具**
+### [0.2.2](https://github.com/oljc/create-arco-pro/compare/v0.2.1...v0.2.2) (2025-01-23)
+
+
+### ### :sparkles: Features | 更新
+
+* 新功能、修复一些已知bug ([7192120](https://github.com/oljc/create-arco-pro/commit/71921209a202288cab1e0b0ad27cfb08a1091691))
+
 ### [0.2.1](https://github.com/oljc/create-arco-pro/compare/v0.2.0...v0.2.1) (2025-01-15)
 
 
