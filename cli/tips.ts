@@ -8,11 +8,12 @@ class Tips {
 
   constructor(text: string = '加载中...') {
     this.text = text
+    process.stdout.write('\x1b[?25l')
   }
 
   private stopWithStatus(symbol: string, message: string) {
     this.stop()
-    process.stdout.write(`\r\x1b[K${symbol} ${message}\n`)
+    process.stdout.write(`\r\x1b[K${symbol} ${message}\x1b[?25h\n`)
   }
 
   /**
@@ -20,8 +21,7 @@ class Tips {
    */
   start(text?: string) {
     if (text) this.text = text
-    if (this.interval) return this
-
+    this.stop()
     this.interval = setInterval(() => {
       const frame = this.frames[this.frameIndex]
       process.stdout.write(`\r\x1B[K${frame} ${this.text}`)
@@ -61,4 +61,4 @@ class Tips {
   }
 }
 
-export const tipsManage = (text: string) => new Tips(text)
+export const tipsManage = (text?: string) => new Tips(text)

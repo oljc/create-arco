@@ -11,64 +11,88 @@ export const isValidName = (name: string): boolean => {
   return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(name)
 }
 
+export const existsFiles = (name: string) => {
+  const files = fs.readdirSync(process.cwd())
+  return files.includes(name)
+}
+
 /**
  * 下载文件
  * @param url 下载地址
  * @param dest 保存路径
  */
-export async function fetch(url: string, dest: string, tips: any): Promise<void> {
+export const fetch = async (url: string, dest: string, tips: any): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
-    const parsedUrl = new URL(url)
-    const options: https.RequestOptions = {
-      timeout: 15000,
-      hostname: parsedUrl.hostname,
-      port: parsedUrl.port,
-      path: parsedUrl.pathname,
-      headers: {
-        Connection: 'keep-alive'
+    let countdown = 60
+    const timer = setInterval(() => {
+      countdown -= 1
+      tips.start().update(`正在生成项目  尝试时间${countdown}s \u{23F3}`)
+      if (countdown === 0) {
+        exit(false)
+      }
+    }, 1000)
+
+    const exit = (pass, tip?: string) => {
+      clearInterval(timer)
+      if (pass) {
+        tips.succeed(tip || '初始化完成')
+        resolve()
+      } else {
+        tips.fail(tip || '网络超时请稍后重试')
+        reject()
+      }
+    }
+    // 重试
+    let retry = 3
+    const tryAgain = (url: string) => {
+      retry -= 1
+      if (retry <= 0) {
+        exit(false)
+      } else {
+        http(url)
       }
     }
 
-    https
-      .get(options, (res) => {
-        const code = res.statusCode
-        if (code == null) {
-          return reject(new Error('No status code'))
-        }
-        if (code >= 400) {
-          reject({ code, message: res.statusMessage })
-        } else if (code >= 300) {
-          fetch(res.headers.location, dest, tips).then(resolve, reject)
-        } else {
-          let downloadedSize = 0
-          const startTime = Date.now()
-          res
-            .on('data', (chunk) => {
-              downloadedSize += chunk.length
-              const elapsedTime = (Date.now() - startTime) / 1000
-              const speed = (downloadedSize / 1024 / elapsedTime).toFixed(2)
-              tips.update(`正在下载中 \u{23F3}${speed} KB/s`)
-            })
-            .pipe(fs.createWriteStream(dest))
-            .on('finish', () => {
-              tips.succeed('初始化完成')
-              resolve()
-            })
-            .on('error', () => {
-              tips.fail('初始化失败')
-              reject
-            })
-        }
-      })
-      .on('error', () => {
-        // TODO: 保底加速访问后续处理
-        if (!url.includes('https://fastgit.cc')) {
-          fetch(`https://fastgit.cc/${url}`, dest, tips).then(resolve, reject)
-        } else {
-          tips.fail('网络超时请稍后重试')
-          reject
-        }
-      })
+    const http = (url: string) => {
+      const parsedUrl = new URL(url)
+      https
+        .get(
+          {
+            timeout: 15000,
+            hostname: parsedUrl.hostname,
+            port: parsedUrl.port || 443,
+            path: parsedUrl.pathname,
+            headers: {
+              Connection: 'keep-alive'
+            }
+          },
+          (res) => {
+            const code = res.statusCode
+            if (code >= 400) {
+              tryAgain(`https://fastgit.cc/${url}`)
+            } else if (code >= 300 && res.headers.location) {
+              tryAgain(res.headers.location)
+            } else {
+              clearInterval(timer)
+              let downloadedSize = 0
+              const startTime = Date.now()
+              res
+                .on('data', (chunk) => {
+                  downloadedSize += chunk.length
+                  const speed = Math.round(
+                    (downloadedSize >> 10) / ((Date.now() - startTime) / 1000)
+                  )
+                  tips.update(`正在下载中  ${speed} KB/s \u{23F3}`)
+                })
+                .pipe(fs.createWriteStream(dest))
+                .on('finish', () => exit(true))
+                .on('error', () => exit(false, '初始化失败'))
+            }
+          }
+        )
+        .on('error', () => tryAgain(`https://fastgit.cc/${url}`))
+    }
+    http(url)
   })
 }
 
@@ -118,7 +142,7 @@ export const command = (cmd: string, args: string[], cwd?: string) => {
   return new Promise((resolve, reject) => {
     const child = spawn(cmd, args, {
       shell: process.platform === 'win32',
-      stdio: ['ignore', 'ignore', 'inherit'],
+      stdio: ['ignore', 'ignore', 'ignore'],
       cwd
     })
     child.on('close', resolve)

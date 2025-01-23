@@ -4,20 +4,15 @@ import prompts from './prompt'
 import { parseArgs } from 'node:util'
 import { banner, bannerStr } from './constants'
 import { font } from './color'
-import { isValidName, fetch, untar, createTempDir, command } from './utils'
+import { isValidName, fetch, untar, createTempDir, command, existsFiles } from './utils'
 import { version as v, name } from '../package.json'
 import awesome from '../templates/awesome.json'
 import { tipsManage } from './tips'
 
 async function main() {
-  const cwd = process.cwd()
-  const args = process.argv.slice(2)
-
   const { values: argv, positionals } = parseArgs({
-    args,
-    options: {
-      version: { type: 'boolean', short: 'v' }
-    },
+    args: process.argv.slice(2),
+    options: { version: { type: 'boolean', short: 'v' } },
     strict: false
   })
 
@@ -26,11 +21,9 @@ async function main() {
     process.exit(0)
   }
 
-  console.log()
   console.log(
-    process.stdout.isTTY && process.stdout.getColorDepth() > 8 ? banner : font(bannerStr, 'blue')
+    `\n${process.stdout.isTTY && process.stdout.getColorDepth() > 8 ? banner : font(bannerStr, 'blue')}\n`
   )
-  console.log()
 
   const supportedManagers = await Promise.all(
     ['pnpm', 'yarn', 'npm'].map(async (manager) => {
@@ -53,7 +46,15 @@ async function main() {
           message: '请输入项目名称',
           initial: positionals[0] || 'hello-arco-pro',
           format: (name: string) => name.trim(),
-          validate: (name: string) => isValidName(name) || '请重新输入合法项目名'
+          validate: (name: string) => {
+            if (!isValidName(name)) {
+              return '请输入合法的项目名'
+            }
+            if (existsFiles(name)) {
+              return '当前目录下存在同名项目'
+            }
+            return true
+          }
         },
         {
           name: 'techStack',
@@ -107,7 +108,7 @@ async function main() {
         {
           name: 'initGit',
           type: 'confirm',
-          message: '是否初始化 Git',
+          message: '是否初始化Git',
           initial: true
         },
         {
@@ -136,7 +137,6 @@ async function main() {
 
   const { projectName, techStack, version, community, manager, initGit } = result
 
-  const tips = tipsManage('正在生成项目').start()
   const { tempDir, cleanup } = createTempDir()
 
   // 当选择的是社区版本时 从Github上下载
@@ -146,7 +146,8 @@ async function main() {
       : `https://github.com/RenderUI/${techStack}-${version}/archive/refs/heads/main.tar.gz`
 
   const file = `${tempDir}/${projectName}.tar.gz`
-  const path = `${cwd}/${projectName}`
+  const path = `${process.cwd()}/${projectName}`
+  const tips = tipsManage()
   await fetch(url, file, tips)
   await untar(file, path)
 
@@ -162,30 +163,54 @@ async function main() {
     }
   }
 
-  // 安装依赖
-  tips.start('安装项目依赖中')
-  const argsList = [
-    ['install', '--quiet'],
-    ['install', '--quiet', '--registry', 'https://registry.npmmirror.com']
-  ]
+  const installDep = async () => {
+    tips.start('安装项目依赖中')
+    const installCmd = [
+      ['install', '--quiet', '--silent'],
+      ['install', '--quiet', '--silent', '--registry', 'https://registry.npmmirror.com']
+    ]
 
-  const success = argsList.some(async (args) => {
-    try {
-      await command(manager, args, path)
-      tips.succeed('项目依赖安装成功')
-      return true
-    } catch {
-      return false
+    let success = false
+    for (const args of installCmd) {
+      try {
+        await command(manager, args, path)
+        tips.succeed('项目依赖安装成功')
+        success = true
+        break
+      } catch {
+        continue
+      }
     }
-  })
 
-  if (!success) {
-    tips.fail('依赖安装失败，请手动安装')
+    if (!success) {
+      tips.fail('项目依赖安装失败')
+      const { install } = await prompts([
+        {
+          name: 'install',
+          type: 'select',
+          message: '依赖安装失败，是否继续尝试？',
+          options: [
+            { label: '再次尝试', value: 'retry' },
+            { label: '跳过', value: 'skip' }
+          ]
+        }
+      ])
+
+      if (install === 'retry') {
+        process.stdout.write('\u001b[2A\u001b[K')
+        await installDep()
+      } else {
+        tips.warn('已选择跳过，请自行安装依赖')
+      }
+    }
   }
 
-  console.log(`\n\u{1F389} 快速开始：\n`)
-  console.log(`  - ${font(`cd ${name}`, 192)}`)
-  console.log(`  - ${font(community.start || 'pnpm run dev', 192)}`)
+  await installDep()
+
+  console.log(`\n\u{1F389}快速开始:`)
+  console.log(`   - ${font(`cd ${projectName}`, 192)}`)
+  const start = (community?.start || `${manager} run dev`).replace(/\b(pnpm|yarn|npm)\b/, manager)
+  console.log(`   - ${font(start, 192)}`)
 
   if (version === 'community') {
     console.log(font(`\n项目文档：${font(community.repo, 'underline')}`, 'blue'))
@@ -193,10 +218,11 @@ async function main() {
   console.log(
     font(`\nGitHub: ${font('https://github.com/oljc/creat-arco-pro', 'underline')}`, 'blue')
   )
-  console.log(font('感谢您的使用！如有反馈或需要支持，欢迎访问项目仓库并给予Star！', 'blue'))
+  console.log(font('感谢您的使用！如有反馈或需要支持，欢迎访问项目仓库并给予Star！\n', 'blue'))
   process.exit(0)
 }
 
 main().catch((e) => {
-  console.error(e)
+  if (e) console.error('错误信息', e)
+  process.exit(1)
 })
