@@ -1,13 +1,13 @@
 <div align="center">
 
-<h1 align="center">Create Arco Pro</h1>
+<h1 align="center">Create Arco</h1>
 <p align="center">一个能够快速搭建 Arco 模板项目的命令行工具</p> 
   
 ![Static Badge](https://img.shields.io/badge/%E8%B6%85%E7%BA%A7%E5%BF%AB%E7%9A%84Cli%20-bright?logo=bytedance&color=%23fff)
-![NPM Version](https://img.shields.io/npm/v/create-arco-pro?logo=npm&logoColor=%23CB3837&label=version&labelColor=%23E8F3FF&color=%23165DFF)
-![GitHub License](https://img.shields.io/github/license/oljc/create-arco-pro?labelColor=%23404040&color=%2300B42A)
-![npm package minimized gzipped size](https://img.shields.io/bundlejs/size/create-arco-pro?label=mini%20size&labelColor=%231d2129&color=%230E42D2)
-![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/create-arco-pro?logo=javascript&color=%233491FA)
+![NPM Version](https://img.shields.io/npm/v/create-arco?logo=npm&logoColor=%23CB3837&label=version&labelColor=%23E8F3FF&color=%23165DFF)
+![GitHub License](https://img.shields.io/github/license/oljc/create-arco?labelColor=%23404040&color=%2300B42A)
+![npm package minimized gzipped size](https://img.shields.io/bundlejs/size/create-arco?label=mini%20size&labelColor=%231d2129&color=%230E42D2)
+![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/create-arco?logo=javascript&color=%233491FA)
 
 </div>
 
@@ -22,35 +22,44 @@
 
 ## 🏷️ 使用
 
-运行以下命令，按照提示步骤即可在当前目录下创建一个 Arco 模板项目
+运行以下任意命令，按照步骤选择即可在当前目录下创建一个 Arco 模板项目
+
+```
+包管理器 create arco 项目名(可不填) 
+```
+或
+```
+包管理器 create arco-pro 项目名(可不填)
+```
 
 ### Pnpm：
 
 ```sh
-pnpm create arco-pro
+pnpm create arco@latest
 ```
 
 ### Yarn：
 
 ```sh
-yarn create arco-pro
+yarn create arco@latest
 ```
 
 ### NPM：
 
 ```sh
-npm create arco-pro@latest
+npm create arco@latest
 ```
 
 ### npx
 
 ```sh
-npx create-arco-pro
+npx create-arco@latest
 ```
 
 > [!TIP]
+> 推荐@latest 保持使用最新版本
 > ```sh
->  pnpm create arco-pro <项目名>
+>  pnpm create arco@latest <项目名>
 > ```
 
 ## ⚙️ 配置选项
@@ -83,7 +92,7 @@ npx create-arco-pro
 
 ## 贡献
 
-如果你有好的意见或建议，欢迎给我们提 [issue](https://github.com/oljc/creat-arco-pro/issues)
+如果你有好的意见或建议，欢迎给我们提 [issue](https://github.com/oljc/create-arco/issues)
 
 ## 📑 开源协议
 

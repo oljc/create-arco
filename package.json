@@ -1,7 +1,7 @@
 {
-  "name": "create-arco-pro",
+  "name": "create-arco",
   "version": "0.2.2",
-  "description": "A template to quickly initialize an Arco Pro project",
+  "description": "A template to quickly initialize an Arco project",
   "author": "oljc <ljc.byte@gmail.com>",
   "main": "dist/index.cjs",
   "type": "module",
@@ -19,7 +19,7 @@
     "LICENSE"
   ],
   "bin": {
-    "create-arco-pro": "./dist/index.cjs"
+    "create-arco": "./dist/index.cjs"
   },
   "packageManager": "pnpm@9.15.3",
   "engines": {
@@ -27,14 +27,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oljc/create-arco-pro.git"
+    "url": "git+https://github.com/oljc/create-arco.git"
   },
   "bugs": {
-    "url": "https://github.com/oljc/create-arco-pro/issues"
+    "url": "https://github.com/oljc/create-arco/issues"
   },
-  "homepage": "https://github.com/oljc/create-arco-pro",
+  "homepage": "https://github.com/oljc/create-arco",
   "keywords": [
     "create-arco-pro",
+    "create-arco",
     "arco-pro",
     "template",
     "arco"
