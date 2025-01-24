@@ -51,6 +51,19 @@ jobs:
         run: pnpm run build
 
       - name: Publish
+        id: publish_create_arco
+        run: pnpm publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Modify package.json
+        if: success()
+        run: |
+          jq '.name = "create-arco-pro"' package.json > temp_package.json
+          mv temp_package.json package.json
+
+      - name: Publish Pro
+        if: success()
         run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
