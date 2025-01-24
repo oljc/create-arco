@@ -1,6 +1,6 @@
 {
   "name": "create-arco",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A template to quickly initialize an Arco project",
   "author": "oljc <ljc.byte@gmail.com>",
   "main": "dist/index.cjs",

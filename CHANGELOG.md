@@ -1,6 +1,28 @@
 # 更新日志(Changelog):tada:
 
 **一款为开发者快速搭建 Arco 项目的命令行工具**
+### [0.2.3](https://github.com/oljc/create-arco/compare/v0.2.2...v0.2.3) (2025-01-24)
+
+
+### ### :bug: Bug | 修复
+
+* 调整选择组件的展示 ([af12e39](https://github.com/oljc/create-arco-pro/commit/af12e3992ca82c84b690670901486d93ebda5268))
+
+
+### ### :sparkles: Features | 更新
+
+* 修复一些已知问题 ([aa7db9a](https://github.com/oljc/create-arco-pro/commit/aa7db9a5ad7ef27557fbe4906e4fe23f2edfca77))
+
+
+### ### :rocket: Chore
+
+* 调整主包名 ([44de799](https://github.com/oljc/create-arco-pro/commit/44de7998f8183b3273b0924f930d8c7fdedccdc6))
+
+
+### ### :gear: CI | 持续集成
+
+* 发布别名包 ([c96d51c](https://github.com/oljc/create-arco-pro/commit/c96d51c0f4fb00cd2a52ef7593b5a76f778c33d2))
+
 ### [0.2.2](https://github.com/oljc/create-arco/compare/v0.2.1...v0.2.2) (2025-01-23)
 
 
