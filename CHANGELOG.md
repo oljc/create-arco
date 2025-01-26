@@ -1,6 +1,33 @@
 # 更新日志(Changelog):tada:
 
 **一款为开发者快速搭建 Arco 项目的命令行工具**
+### [0.2.4](https://github.com/oljc/create-arco/compare/v0.2.3...v0.2.4) (2025-01-26)
+
+
+### :memo: Docs | 文档
+
+* 更新文档生成规则 ([d9bc24e](https://github.com/oljc/create-arco-pro/commit/d9bc24ea22239f4c6da79c96502b605dae212128))
+
+
+### :recycle: Refactoring | 重构
+
+* 增强代码类型 ([9e64374](https://github.com/oljc/create-arco-pro/commit/9e6437447b604f650768275300b9d60ab55fac45))
+
+
+### :sparkles: Features | 更新
+
+* 增强ts检查 ([0db1b4a](https://github.com/oljc/create-arco-pro/commit/0db1b4a6a0bd3421235c1b22cfdc9d0aa6840576))
+
+
+### :package: Build | 构建
+
+* esbuild迁移为rslib ([a144d55](https://github.com/oljc/create-arco-pro/commit/a144d558d60f8a4a59df873d3f641843b363f8e6))
+
+
+### :gear: CI | 持续集成
+
+* 流水线增加类型检查 ([408497e](https://github.com/oljc/create-arco-pro/commit/408497e18dff3c18378cc03c9e1ed957a8030bf4))
+
 ### [0.2.3](https://github.com/oljc/create-arco/compare/v0.2.2...v0.2.3) (2025-01-24)
 
 
