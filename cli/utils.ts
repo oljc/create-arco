@@ -6,6 +6,7 @@ import os from 'node:os'
 import { font } from './color'
 import { x } from 'tar'
 import { spawn } from 'child_process'
+import { Tips } from './tips'
 
 export const isValidName = (name: string): boolean => {
   return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(name)
@@ -21,7 +22,7 @@ export const existsFiles = (name: string) => {
  * @param url 下载地址
  * @param dest 保存路径
  */
-export const fetch = async (url: string, dest: string, tips: any): Promise<void> => {
+export const fetch = async (url: string, dest: string, tips: Tips): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
     let countdown = 60
     const timer = setInterval(() => {
@@ -32,7 +33,7 @@ export const fetch = async (url: string, dest: string, tips: any): Promise<void>
       }
     }, 1000)
 
-    const exit = (pass, tip?: string) => {
+    const exit = (pass: boolean, tip?: string) => {
       clearInterval(timer)
       if (pass) {
         tips.succeed(tip || '初始化完成')
@@ -67,7 +68,7 @@ export const fetch = async (url: string, dest: string, tips: any): Promise<void>
             }
           },
           (res) => {
-            const code = res.statusCode
+            const code = res.statusCode || 0
             if (code >= 400) {
               tryAgain(`https://fastgit.cc/${url}`)
             } else if (code >= 300 && res.headers.location) {
@@ -172,13 +173,13 @@ export const icons = {
   ...(process.platform === 'win32' ? win : {})
 }
 
-const states = {
+const states: Record<StateIcons, string> = {
   abort: font(icons.cross, 'red'),
   exit: font(icons.cross, 'yellow'),
   submit: font(icons.tick, 'green'),
   none: font('?', 'cyan')
 }
 
-export const icon = (name) => states[name] || states.none
+export const icon = (name: StateIcons) => states[name]
 
-export const delimiter = (c) => font(c ? icons.ellipsis : icons.pointerSmall, 'gray')
+export const delimiter = (c: boolean) => font(c ? icons.ellipsis : icons.pointerSmall, 'gray')

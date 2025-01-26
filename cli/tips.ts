@@ -1,6 +1,6 @@
 import { font } from './color'
 
-class Tips {
+export class Tips {
   private text: string
   private interval: NodeJS.Timeout | null = null
   private frames: string[] = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']

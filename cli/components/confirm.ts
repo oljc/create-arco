@@ -1,14 +1,18 @@
 import { font } from '../color'
 import { Prompt } from './prompt'
 import { delimiter, icon } from '../utils'
+import { erase, cursor } from 'sisteransi'
 
-const { erase, cursor } = require('sisteransi')
+export class ConfirmPrompt extends Prompt {
+  private msg: string
+  private value: boolean
+  private yes: string
+  private no: string
 
-class ConfirmPrompt extends Prompt {
-  constructor(opts = {} as any) {
+  constructor(opts: ConfirmOptions) {
     super()
     this.msg = opts.message
-    this.value = opts.initial
+    this.value = opts.initial || true
     this.yes = opts.yes || 'Yes'
     this.no = opts.no || 'No'
     this.out.write(cursor.hide)
@@ -55,7 +59,7 @@ class ConfirmPrompt extends Prompt {
     this.end()
   }
 
-  _(c) {
+  input(c: string) {
     if (c.toLowerCase() === 'y') {
       this.value = true
       return this.submit()
@@ -67,7 +71,7 @@ class ConfirmPrompt extends Prompt {
     return this.bell()
   }
   render() {
-    const highlight = (text) => font(text, ['cyan', 'bold'])
+    const highlight = (text: string) => font(text, ['cyan', 'bold'])
     const choice = this.value
       ? `${highlight(this.yes)}/${this.no}`
       : `${this.yes}/${highlight(this.no)}`
@@ -76,10 +80,7 @@ class ConfirmPrompt extends Prompt {
     const message = font(this.msg, 'bold')
     const delim = delimiter(this.status === 'submit')
     const result = this.status === 'submit' ? (this.value ? this.yes : this.no) : choice
-
-    this.outputText = `${statusIcon} ${message} ${delim} ${result}`
-    this.out.write(erase.line + cursor.to(0) + this.outputText)
+    const outputText = `${statusIcon} ${message} ${delim} ${result}`
+    this.out.write(erase.line + cursor.to(0) + outputText)
   }
 }
-
-export default ConfirmPrompt

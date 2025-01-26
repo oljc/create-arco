@@ -8,15 +8,15 @@ class Styler {
     this.text = text
     this.styles = []
     // 执行内置方法
-    const run = (fn) => {
+    const run = (fn: StyleType): void => {
       if (typeof fn === 'number') this.color(fn)
-      else if (typeof this[fn] === 'function') (this[fn] as Function).call(this)
+      else if (typeof this[fn] === 'function') (this[fn] as () => void).call(this)
     }
     if (Array.isArray(fn)) {
       for (const style of fn) {
         run(style)
       }
-    } else {
+    } else if (fn !== undefined) {
       run(fn)
     }
   }

@@ -1,11 +1,18 @@
 import { font } from '../color'
 import { Prompt } from './prompt'
 import { icons, icon, delimiter } from '../utils'
+import { erase, cursor } from 'sisteransi'
 
-const { erase, cursor } = require('sisteransi')
-
-class TextPrompt extends Prompt {
-  constructor(opts = {} as any) {
+export class InputPrompt extends Prompt {
+  private message: string
+  private initial: string
+  private format: (s: string) => string
+  private validator: (s: string) => boolean | string
+  private value: string
+  private errorMsg: string
+  private error: boolean
+  private cursor: number
+  constructor(opts: InputOptions) {
     super()
     this.message = opts.message
     this.initial = opts.initial || ``
@@ -58,12 +65,12 @@ class TextPrompt extends Prompt {
     }
   }
 
-  moveCursor(n) {
+  moveCursor(n: number) {
     this.cursor = Math.max(0, Math.min(this.cursor + n, this.value.length))
     this.render()
   }
 
-  _(char) {
+  input(char: string) {
     const before = this.value.slice(0, this.cursor)
     const after = this.value.slice(this.cursor)
     this.value = this.format(`${before}${char}${after}`)
@@ -125,5 +132,3 @@ class TextPrompt extends Prompt {
     )
   }
 }
-
-export default TextPrompt

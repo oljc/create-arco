@@ -38,7 +38,7 @@ async function main() {
 
   let result: Answers = {} as Answers
   try {
-    result = await prompts(
+    result = await prompts<Answers>(
       [
         {
           name: 'projectName',
@@ -69,7 +69,7 @@ async function main() {
           name: 'version',
           type: 'select',
           message: '请选择版本',
-          options: (answers) => [
+          options: (answers: Answers) => [
             { label: '基础版', value: 'basic' },
             { label: '完整版', value: 'full' },
             {
@@ -86,7 +86,7 @@ async function main() {
           type: 'select',
           message: '请选择社区开源模板',
           when: (answers) => answers.version === 'community',
-          options: (answers) =>
+          options: (answers: Answers) =>
             awesome[answers.techStack].map((item) => ({
               label: item.name,
               value: item
@@ -96,7 +96,7 @@ async function main() {
           name: 'manager',
           type: 'select',
           message: '请选择包管理器',
-          options: (answers) => {
+          options: (answers: Answers) => {
             const recommended = answers.community?.packageManager || 'pnpm'
             return supportedManagers.map((manager) => ({
               label: manager,
@@ -125,8 +125,7 @@ async function main() {
         }
       }
     )
-  } catch (cancelled) {
-    console.log(cancelled.message)
+  } catch {
     process.exit(1)
   }
 
@@ -141,7 +140,7 @@ async function main() {
 
   // 当选择的是社区版本时 从Github上下载
   const url =
-    version === 'community'
+    version === 'community' && community
       ? `${community.repo}/archive/refs/heads/main.tar.gz`
       : `https://github.com/RenderUI/${techStack}-${version}/archive/refs/heads/main.tar.gz`
 
@@ -158,7 +157,7 @@ async function main() {
     try {
       await command('git', ['init', '--quiet'], path)
       tips.update('Git 初始化成功')
-    } catch (e) {
+    } catch {
       tips.fail('Git 初始化失败, 请自行初始化')
     }
   }
@@ -184,7 +183,7 @@ async function main() {
 
     if (!success) {
       tips.fail('项目依赖安装失败')
-      const { install } = await prompts([
+      const { install } = await prompts<{ install: string }>([
         {
           name: 'install',
           type: 'select',
@@ -212,7 +211,7 @@ async function main() {
   const start = (community?.start || `${manager} run dev`).replace(/\b(pnpm|yarn|npm)\b/, manager)
   console.log(`   - ${font(start, 192)}`)
 
-  if (version === 'community') {
+  if (version === 'community' && community) {
     console.log(font(`\n项目文档：${font(community.repo, 'underline')}`, 'blue'))
   }
   console.log(font(`\nGitHub: ${font('https://github.com/oljc/creat-arco', 'underline')}`, 'blue'))
