@@ -1,11 +1,17 @@
 {
-  "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
-    "strict": false,
-    "resolveJsonModule": true,
-    "moduleResolution": "Bundler",
+    "lib": ["ES2021"],
     "module": "ESNext",
-    "outDir": "dist"
+    "outDir": "dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    "useDefineForClassFields": true,
+    "allowImportingTsExtensions": true
   },
   "include": ["cli/**/*"]
 }
