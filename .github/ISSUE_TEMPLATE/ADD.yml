@@ -1,8 +1,8 @@
 name: 新增模板项目
 description: 新增一个开源项目
-title: "[Add]: "
-labels: ["template"]
-projects: ["main"]
+title: '[Add]: '
+labels: ['template']
+projects: ['main']
 assignees:
   - oljc
 body:

@@ -1,5 +1,5 @@
 import fs from 'node:fs'
-import https from 'node:https'
+import axios from 'axios'
 import zlib from 'node:zlib'
 import path from 'node:path'
 import os from 'node:os'
@@ -18,13 +18,37 @@ export const existsFiles = (name: string) => {
 }
 
 /**
+ * 代理网站
+ */
+let proxyHttps = [
+  'https://fastgit.cc',
+  'https://gh.llkk.cc',
+  'https://gh-proxy.com',
+  'https://github.tbedu.top',
+  'https://gh.idayer.com',
+  'https://gh.zhaojun.im',
+  'https://ghp.keleyaa.com'
+]
+
+export const fetchProxyHttps = async () => {
+  try {
+    const response = await axios.get('https://api.akams.cn/github')
+    const proxyUrls = response.data.data.map((item: { url: string }) => item.url)
+    proxyHttps = [...proxyHttps, ...proxyUrls]
+  } catch {
+    // ignore
+  }
+}
+
+/**
  * 下载文件
  * @param url 下载地址
  * @param dest 保存路径
  */
 export const fetch = async (url: string, dest: string, tips: Tips): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
-    let countdown = 60
+    let countdown = 120
+    let proxyIndex = 0
     const timer = setInterval(() => {
       countdown -= 1
       tips.start().update(`正在生成项目  尝试时间${countdown}s \u{23F3}`)
@@ -43,56 +67,45 @@ export const fetch = async (url: string, dest: string, tips: Tips): Promise<void
         reject()
       }
     }
-    // 重试
-    let retry = 3
-    const tryAgain = (url: string) => {
-      retry -= 1
-      if (retry <= 0) {
-        exit(false)
-      } else {
-        http(url)
+
+    fetchProxyHttps()
+
+    const getProxyUrl = () => {
+      const api = `${proxyHttps[proxyIndex]}/${url}`
+      proxyIndex += 1
+      if (proxyIndex >= proxyHttps.length) {
+        proxyIndex = 0
+      }
+      return api
+    }
+
+    const http = async (url = getProxyUrl()) => {
+      try {
+        const response = await axios.get(url, { timeout: 10000, responseType: 'stream' })
+        const code = response.status || 0
+        if (code >= 400) {
+          http(getProxyUrl()) // 重试
+        } else if (code >= 300 && response.headers.location) {
+          http(response.headers.location) // 重定向处理
+        } else {
+          clearInterval(timer)
+          let downloadedSize = 0
+          const startTime = Date.now()
+          response.data.on('data', (chunk: Buffer) => {
+            downloadedSize += chunk.length
+            const speed = Math.round((downloadedSize >> 10) / ((Date.now() - startTime) / 1000))
+            tips.update(`正在下载中  ${speed} KB/s \u{23F3}`)
+          })
+          response.data
+            .pipe(fs.createWriteStream(dest))
+            .on('finish', () => exit(true))
+            .on('error', () => exit(false, '初始化失败'))
+        }
+      } catch {
+        http(getProxyUrl())
       }
     }
 
-    const http = (url: string) => {
-      const parsedUrl = new URL(url)
-      https
-        .get(
-          {
-            timeout: 15000,
-            hostname: parsedUrl.hostname,
-            port: parsedUrl.port || 443,
-            path: parsedUrl.pathname,
-            headers: {
-              Connection: 'keep-alive'
-            }
-          },
-          (res) => {
-            const code = res.statusCode || 0
-            if (code >= 400) {
-              tryAgain(`https://fastgit.cc/${url}`)
-            } else if (code >= 300 && res.headers.location) {
-              tryAgain(res.headers.location)
-            } else {
-              clearInterval(timer)
-              let downloadedSize = 0
-              const startTime = Date.now()
-              res
-                .on('data', (chunk) => {
-                  downloadedSize += chunk.length
-                  const speed = Math.round(
-                    (downloadedSize >> 10) / ((Date.now() - startTime) / 1000)
-                  )
-                  tips.update(`正在下载中  ${speed} KB/s \u{23F3}`)
-                })
-                .pipe(fs.createWriteStream(dest))
-                .on('finish', () => exit(true))
-                .on('error', () => exit(false, '初始化失败'))
-            }
-          }
-        )
-        .on('error', () => tryAgain(`https://fastgit.cc/${url}`))
-    }
     http(url)
   })
 }
@@ -124,7 +137,7 @@ export async function untar(source: string, desc: string): Promise<void> {
  */
 export const createTempDir = (baseDir?: string) => {
   const dir = baseDir || os.tmpdir()
-  const tempDir = path.join(dir, '.temp')
+  const tempDir = path.join(dir, '.create-arco-temp')
   if (!fs.existsSync(tempDir)) {
     fs.mkdirSync(tempDir, { recursive: true })
   }
