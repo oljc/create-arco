@@ -212,7 +212,7 @@ async function main() {
   console.log(`   - ${font(start, 192)}`)
 
   if (version === 'community' && community) {
-    console.log(font(`\n项目文档：${font(community.repo, 'underline')}`, 'blue'))
+    console.log(font(`\n当前模板文档：${font(community.repo, 'underline')}`, 'blue'))
   }
   console.log(font(`\nGitHub: ${font('https://github.com/oljc/create-arco', 'underline')}`, 'blue'))
   console.log(font('感谢您的使用！如有反馈或需要支持，欢迎访问项目仓库并给予Star！\n', 'blue'))
