@@ -141,8 +141,8 @@ async function main() {
   // 当选择的是社区版本时 从Github上下载
   const url =
     version === 'community' && community
-      ? `${community.repo}/archive/refs/heads/main.tar.gz`
-      : `https://github.com/RenderUI/${techStack}-${version}/archive/refs/heads/main.tar.gz`
+      ? `${community.repo}/archive/refs/heads/${community.branch}.tar.gz`
+      : `https://github.com/RenderUI/${techStack}-${version}/archive/refs/heads/${community.branch}.tar.gz`
 
   const file = `${tempDir}/${projectName}.tar.gz`
   const path = `${process.cwd()}/${projectName}`

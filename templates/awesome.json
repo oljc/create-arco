@@ -5,24 +5,28 @@
       "name": "Arco Admin",
       "repo": "https://github.com/oljc/arco-admin",
       "packageManager": "pnpm",
+      "branch": "main",
       "start": "pnpm run dev"
     },
     {
       "name": "Gi Admin Pro",
       "repo": "https://github.com/lin-97/gi-demo",
       "packageManager": "npm",
+      "branch": "master",
       "start": "npm run dev"
     },
     {
       "name": "Fantastic Admin",
       "repo": "https://github.com/fantastic-admin/basic",
       "packageManager": "pnpm",
+      "branch": "main",
       "start": "pnpm run dev"
     },
     {
       "name": "Arco Work",
       "repo": "https://github.com/qingqingxuan/arco-work",
       "packageManager": "npm",
+      "branch": "master",
       "start": "npm run dev"
     }
   ]
