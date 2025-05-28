@@ -13,6 +13,7 @@ interface Awesome {
   repo: string
   packageManager: 'npm' | 'yarn' | 'pnpm'
   start: string
+  branch: string
 }
 
 type StateIcons = 'abort' | 'exit' | 'submit' | 'none'
