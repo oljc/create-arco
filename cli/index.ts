@@ -142,7 +142,7 @@ async function main() {
   const url =
     version === 'community' && community
       ? `${community.repo}/archive/refs/heads/${community.branch}.tar.gz`
-      : `https://github.com/RenderUI/${techStack}-${version}/archive/refs/heads/${community.branch}.tar.gz`
+      : `https://github.com/RenderUI/${techStack}-${version}/archive/refs/heads/main.tar.gz`
 
   const file = `${tempDir}/${projectName}.tar.gz`
   const path = `${process.cwd()}/${projectName}`
